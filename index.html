@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="ANYWORD.js"></script>
+    <link rel="stylesheet" href="ANYWORD.css">
+</head>
+<style>
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    /** background: #f7db80; */
+    background-image: url('fondoanimado.gif'); /* Ruta del GIF */
+    
+   
+
+    }
+
+.wrapper{
+    width: 65vmin;
+    height: 70vmin;
+    border-radius: 5px;
+    background-color: #293447;
+    
+}
+
+.game-details{
+    color: #B8C6DC;
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding: 20px 27px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.play-board{
+    width: 100%;
+    height: 100%;
+    background: #212837;
+}
+
+.score{
+    color: rgb(169, 230, 56);
+}
+
+
+/* Contenedor principal */
+.wrapper {
+    width: 80vmin;
+    height: 90vmin;
+    background-color: rgba(98, 142, 238, 0.9);  /** color principal */
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Detalles del juego */
+.game-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.score {
+    color: #A9E638;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.high-score {
+    color: #FFD700;
+    font-size: 1.4rem;
+}
+
+/* Tablero de juego */
+.play-board {
+    width: 100%;
+    height: 100%;
+    background: #340c69;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* Estilo para las casillas del tablero */
+#board {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 10px;
+    justify-items: center;
+}
+
+.tile {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    background-color: #4d5b6e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 36px;
+    font-weight: bold;
+    transition: all 0.2s ease-in-out;
+}
+
+.tile.correct {
+    background-color: #6AAA64;
+    border-color: #5b9f53;
+}
+
+.tile.present {
+    background-color: #C9B458;
+    border-color: #a69b41;
+}
+
+.tile.absent {
+    background-color: #D84315;
+    border-color: #b23c00;
+}
+
+.tile:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+/* Pista */
+.hint {
+    text-align: center;
+    color: #f5150d;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 20px;
+    margin-bottom: 0;
+    padding: 10px 0;
+    position: absolute;
+    bottom: 0;
+    width: 93.5%;
+
+   
+}
+
+/* Teclado */
+#keyboard-container {
+    display: none;
+}
+
+
+
+.key {
+    background-color: #2b3d46;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    padding: 15px;
+    border-radius: 8px;
+    transition: background-color 0.2s, transform 0.2s;
+    cursor: pointer;
+}
+
+.key:hover {
+    background-color: #1f2c35;
+    transform: scale(1.1);
+}
+
+.key:active {
+    background-color: #3e505e;
+}
+
+/* Animaciones */
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.tile.correct, .tile.present, .tile.absent {
+    animation: bounce 0.4s ease-in-out;
+}
+
+ /* Botón de música */
+ .music-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px; /* Posicionado en la esquina superior derecha */
+        background: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    #music-icon {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-gap: 10px;
+        justify-items: center;
+    }
+
+    /* Botón de información */
+    .info-btn {
+        position: absolute;
+        top: 19px;
+        right: 90px; /* Lo movemos más a la izquierda */
+        background: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    #info-icon {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-gap: 10px;
+        justify-items: center;
+    }
+
+    /* Botón de información */
+    .country-btn {
+        position: absolute;
+        top: 19px;
+        right: 170px; /* Lo movemos más a la izquierda */
+        background: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    #country-icon {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-gap: 10px;
+        justify-items: center;
+    }
+
+    .modal2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal2 .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.modal2 .close-btn {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+
+
+
+
+
+</style>
+<body>
+    <div class="wrapper">
+        <div class="game-details">
+            <span class="score">AnyWord</span>
+            <span class="high-score">Racha: 0</span>
+        </div>
+        <div class="play-board">
+            <br>
+            <div id="board"></div>
+            <br>
+            
+            
+        </div>
+        <!-- Agregamos el teclado dentro de .wrapper -->
+        <div id="keyboard-container"></div>
+        <div class="hint">
+            <h1>Pista: <span id="answer"></span></h1>
+        </div>
+
+       
+
+    </div>
+    <audio id="background-music" autoplay loop>
+        <source src="road.mp3" type="audio/mp3">
+    </audio>
+
+    <audio id="right-answer">
+        <source src="rightAnswer.mp3" type="audio/mp3">
+    </audio>
+
+    <audio id="wrong-answer">
+        <source src="wrongAnswer.mp3" type="audio/mp3">
+    </audio>
+
+    <button id="music-toggle" class="music-btn">
+        <img src="Sound-on.webp" alt="Music Icon" id="music-icon">
+    </button>
+
+    <button id="info-toggle" class="info-btn">
+        <img src="info.png" alt="Info Icon" id="info-icon">
+    </button>
+
+    <button id="country-toggle" class="country-btn">
+        <img src="spain.webp" alt="Country Icon" id="country-icon">
+    </button>
+
+
+    <script>
+        let isPlaying = true; // Inicia con la música encendida
+        const audio = document.getElementById('background-music');
+        const musicToggleButton = document.getElementById('music-toggle');
+        const countryButton = document.getElementById('country-toggle');
+        const musicIcon = document.getElementById('music-icon');
+
+        const infoIcon = document.getElementById('info-icon');
+
+
+
+    
+
+        musicIcon.setAttribute("width", "48px");
+                musicIcon.setAttribute("height", "48px");
+
+                musicIcon.setAttribute("width", "48px");
+                musicIcon.setAttribute("height", "48px");
+
+       
+        let countrySpain = true;
+        
+
+        // Función para encender y apagar la música
+        musicToggleButton.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause(); // Pausa la música
+                musicIcon.src = 'Sound-off-icon.png'; // Cambia el ícono a apagado
+                musicIcon.setAttribute("width", "40px");
+                musicIcon.setAttribute("height", "40px");
+                
+            } else {
+                audio.play(); // Reproduce la música
+                musicIcon.src = 'Sound-on.webp'; // Cambia el ícono a encendido
+                musicIcon.setAttribute("width", "48px");
+                musicIcon.setAttribute("height", "48px");
+            }
+            isPlaying = !isPlaying; // Cambia el estado de la música
+        });
+
+       
+
+
+
+        function showModal(message, lang) {
+    // Verifica si ya existe un modal y lo elimina
+    let existingModal = document.getElementById("infoModal");
+    if (existingModal) {
+        existingModal.remove();
+    }
+
+    // Crea el modal
+    let modal = document.createElement("div");
+    modal.id = "infoModal";
+    modal.classList.add("modal2");
+
+    // Contenido del modal con el botón de cierre traducido
+    modal.innerHTML = `
+        <div class="modal-content">
+            <p>${message}</p>
+            <button class="close-btn" onclick="closeModal()">${translations[lang].cerrar}</button>
+        </div>
+    `;
+
+    // Agrega el modal al cuerpo
+    document.body.appendChild(modal);
+}
+
+        // Función para cerrar el modal
+        function closeModal() {
+            let modal = document.getElementById("infoModal");
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        // Asigna el evento al botón de información
+        document.getElementById("info-toggle").addEventListener("click", function() {
+    const language = countrySpain ? 'es' : 'en';  // Determina el idioma actual
+    showModal(translations[language].howToPlay, language);  // Muestra las instrucciones traducidas
+});
+
+
+
+        // Traducciones
+        const translations = {
+    es: {
+        score: 'AnyWord',
+        highScore: 'Racha: 0',
+        hint: 'Pista: ',
+        answer: 'Respuesta',
+        musicToggle: 'Música',
+        infoToggle: 'Información',
+        countryToggle: 'SPAIN',
+        howToPlay: '¿Cómo Jugar?<br><br>' +
+                   'Tienes que averiguar la palabra en 6 intentos.<br><br>' +
+                   'Para ello puedes fijarte en la pista. Cuando escribas una palabra, verás tres colores que te ayudarán:<br><br>' +
+                   '<strong>Rojo:</strong> Las letras en rojo indican que la palabra no contiene esas letras.<br><br>' +
+                   '<strong>Amarillo:</strong> Las letras en amarillo significan que la palabra sí tiene esa letra, aunque no está en la posición correcta.<br><br>' +
+                   '<strong>Verde:</strong> Las letras en verde indican que la palabra contiene esa letra y está en el lugar correcto.',
+        cerrar: 'Cerrar',
+    },
+    en: {
+        score: 'AnyWord',
+        highScore: 'Streak: 0',
+        hint: 'Hint: ',
+        answer: 'Answer',
+        musicToggle: 'Music',
+        infoToggle: 'Information',
+        countryToggle: 'EEUU',
+        howToPlay: 'How to Play?<br><br>' +
+                   'You need to guess the word in 6 attempts.<br><br>' +
+                   'To do this, you can use the hint. When you type a word, you will see three colors that will help you:<br><br>' +
+                   '<strong>Red:</strong> Red letters indicate that the word does not contain those letters.<br><br>' +
+                   '<strong>Yellow:</strong> Yellow letters mean that the word contains that letter, but it is not in the correct position.<br><br>' +
+                   '<strong>Green:</strong> Green letters indicate that the word contains that letter and it is in the correct place.',
+        cerrar: 'Close',
+    }
+};
+        function updateText(language) {
+            document.querySelector('.score').textContent = translations[language].score;
+            document.querySelector('.high-score').textContent = translations[language].highScore;
+            document.querySelector('.hint h1').innerHTML = translations[language].hint + "<span id='answer'></span>";
+
+            // Si tienes más elementos que necesitas traducir, añádelos aquí
+            document.getElementById('music-toggle').setAttribute('aria-label', translations[language].musicToggle);
+            document.getElementById('info-toggle').setAttribute('aria-label', translations[language].infoToggle);
+            document.getElementById('country-toggle').setAttribute('aria-label', translations[language].countryToggle);
+        }
+
+        // Llama a la función para establecer el idioma inicial
+        updateText('es');  // Por defecto en español
+
+        countryButton.addEventListener('click', () => {
+            const countryIcon = document.getElementById('country-icon');
+            
+            if (countrySpain) {
+                countryIcon.src = 'eeuu.webp'; // Cambia el ícono a la bandera de EE.UU.
+                countryIcon.setAttribute("width", "40px");
+                countryIcon.setAttribute("height", "40px");
+
+                updateText('en');  // Cambia el idioma a inglés
+                resetGame();
+                streak = 0;
+            } else {
+                countryIcon.src = 'spain.webp'; // Cambia el ícono a la bandera de España
+                countryIcon.setAttribute("width", "40px");
+                countryIcon.setAttribute("height", "40px");
+
+                updateText('es');  // Cambia el idioma a español
+                resetGame();
+                streak = 0;
+            }
+            
+            countrySpain = !countrySpain; // Alterna entre España y EE.UU.
+            countryButton.blur();
+        });
+
+        
+
+        
+    </script>
+</body>
+</html>
